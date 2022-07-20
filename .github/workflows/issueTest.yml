@@ -1,0 +1,23 @@
+
+以下のジョブは、イシューを開き、最新のubuntuをベースにGitHubのAPIを読み込むジョブになっている。イシューを作成したタイミングで、コメント本文が自動で追記されるか確認してみる。
+
+ .github/workflows/issueTest.yml
+
+name: Issue Test
+on:
+  issues:
+    types: [ opened ]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋コメントありがとう!'
+            })
